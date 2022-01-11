@@ -1,0 +1,14 @@
+create_user:
+  handler: src/functions/user/create_user.api
+  events:
+    - http:
+        path: user/create
+        method: POST
+        cors: true
+sign_in:
+  handler: src/functions/user/signin.api
+  events:
+    - http:
+        path: user/signin
+        method: POST
+        cors: true

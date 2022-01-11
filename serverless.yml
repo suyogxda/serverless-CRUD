@@ -1,0 +1,23 @@
+service: srv-less
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  profile: personal
+  region: ap-south-1
+  deploymentBucket: syg-learn-serverless
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "dynamodb:*"
+      Resource: "*"
+package:
+  patterns:
+    - "!venv/**"
+    - "!utils/__pycache__/**"
+    - "!node_modules/**"
+  individually: true
+functions:
+  - ${file(src/functions/user/index.yml)}
