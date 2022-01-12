@@ -1,10 +1,10 @@
 import json
 
 
-def build_response(code, message):
+def build_response(code, body):
     return {
         "statusCode": code,
         "headers": {"Content-Type": "application/json"},
-        "body": json.dumps({"message": message}),
+        "body": json.dumps(body),
         "isBase64Encoded": False,
     }

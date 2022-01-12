@@ -1,36 +1,36 @@
-import boto3
 import json
+
+import boto3
+
 from src.utils.password_utils import verify_password
-
 from src.utils.utils import build_response
+from src.validators.user_validation import SignIn
+from src.utils.decorators import error_handler
 
 
+@error_handler
 def api(event, context):
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table("alakazam")
 
-    body = json.loads(event["body"])
+    body = json.loads(event["body"]) if event["body"] else {}
     email = body.get("email")
     password = body.get("password")
 
-    # Validations
-    if not email or not password:
-        return build_response(400, "All fields are required")
+    # Validation
+    SignIn(**body)
 
     user = table.get_item(Key={"pk": email, "sk": "USER"}).get("Item")
     if not user:
         return build_response(
-            400, f"User with email: `{email}` doesn't exists"
+            400, {"message": f"User with email: `{email}` doesn't exists"}
         )
 
     # Check account
     valid = verify_password(password, user.get("password").value)
 
     return (
-        {
-            "statusCode": 200,
-            "body": json.dumps({"token": user.get("token")}),
-        }
+        build_response(200, {"token": user.get("token")})
         if valid
-        else build_response(400, "Invalid email or password")
+        else build_response(400, {"message": "Invalid email or password"})
     )

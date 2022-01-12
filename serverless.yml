@@ -30,6 +30,7 @@ package:
     - "!node_modules/**"
     - "!requirements.txt"
     - "!package-lock.json"
+    - "!test.py"
   individually: true
 functions:
   - ${file(src/functions/user/index.yml)}
