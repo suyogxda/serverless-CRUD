@@ -1,7 +1,7 @@
 {
   "name": "srv-less",
   "version": "1.0.0",
-  "description": "A dummy project to learn serverless and other cloud services",
+  "description": "A simple CRUD project to learn serverless and other cloud services",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
