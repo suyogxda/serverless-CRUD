@@ -29,6 +29,7 @@ package:
     - "!utils/__pycache__/**"
     - "!node_modules/**"
     - "!requirements.txt"
+    - "!package-lock.json"
   individually: true
 functions:
   - ${file(src/functions/user/index.yml)}
