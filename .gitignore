@@ -9,6 +9,8 @@ dist/
 
 layers/tools/python/**
 
+test.py
+
 # Compiled Java class files
 *.class
 
