@@ -7,6 +7,8 @@
 node_modules/
 dist/
 
+layers/tools/python/**
+
 # Compiled Java class files
 *.class
 
@@ -56,6 +58,7 @@ media/
 
 *.iml
 .env
+.env.dev
 celerybeat-schedule
 
 mysql.cnf

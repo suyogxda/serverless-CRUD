@@ -1,6 +1,14 @@
 service: srv-less
 frameworkVersion: "2"
 
+layers:
+  PythonDependencies:
+    path: layers/tools
+    compatibleRuntimes:
+      - python3.8
+    description: "Dependencies for 3rd party libs"
+plugins:
+  - serverless-dotenv-plugin
 provider:
   name: aws
   profile: personal
@@ -8,6 +16,8 @@ provider:
   deploymentBucket: syg-learn-serverless
   runtime: python3.8
   lambdaHashingVersion: 20201221
+  layers:
+    - { Ref: PythonDependenciesLambdaLayer }
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -18,6 +28,7 @@ package:
     - "!venv/**"
     - "!utils/__pycache__/**"
     - "!node_modules/**"
+    - "!requirements.txt"
   individually: true
 functions:
   - ${file(src/functions/user/index.yml)}
