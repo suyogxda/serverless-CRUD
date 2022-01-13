@@ -39,15 +39,18 @@ def api(event, context):
 
     # Store to db if user doesn't exist
     user_id = uuid.uuid4()
+    new_token = uuid.uuid4()
     _items = [
         {
             "pk": f"USER#{user_id}",
             "sk": "USER",
+            "email": email,
             "created_at": int(datetime.now(timezone.utc).timestamp()),
             "password": hash_password(password),
+            "token": str(new_token),
         },
         {
-            "pk": f"TOKEN#{uuid.uuid4().hex}",
+            "pk": f"TOKEN#{new_token}",
             "sk": "TOKEN",
             "created_at": int(datetime.now(timezone.utc).timestamp()),
             "user": f"USER#{user_id}",

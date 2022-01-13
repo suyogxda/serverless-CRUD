@@ -1,0 +1,7 @@
+create_news:
+  handler: src/functions/news/create_news.api
+  events:
+    - http:
+        path: news/create
+        method: POST
+        cors: true
