@@ -17,13 +17,14 @@ def api(event, context):
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table(TABLE_NAME)
 
-    body = json.loads(event["body"]) if event["body"] else {}
+    body = json.loads(event["body"]) if event.get("body") else {}
     email = body.get("email")
     password = body.get("password")
 
     # Validation
     SignIn(**body)
 
+    # Query user with email
     user_exists = table.query(
         IndexName="email",
         Limit=1,
@@ -31,6 +32,7 @@ def api(event, context):
         ExpressionAttributeNames={"#sk": "sk", "#email": "email"},
         ExpressionAttributeValues={":sk": "USER", ":email": email},
     ).get("Items")
+
     user = user_exists[0] if len(user_exists) else None
     if not user:
         return build_response(

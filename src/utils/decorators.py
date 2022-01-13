@@ -1,4 +1,3 @@
-import json
 import os
 
 import boto3
@@ -11,6 +10,10 @@ TABLE_NAME = os.environ.get("TABLE_NAME")
 
 
 def error_handler(func):
+    """
+    Decorator used to catch certain types of Exceptions
+    """
+
     def validate(*args, **kwargs):
         try:
             to_return = func(*args, **kwargs)
@@ -27,21 +30,34 @@ def error_handler(func):
 
 
 def auth_handler(func):
+    """
+    Decorator to verify if request is authenticated or not.
+    For now, a simple random token is generated per user.
+    The token doesn't have any expiration or other essential attributes.
+    """
+
     def validate(*args, **kwargs):
         event = args[0]
 
+        # Semd 401 if no auth header is present
         if not event or not event.get("headers"):
             raise GenericError("Authorization details not provided", 401)
 
         headers = event.get("headers", {})
 
+        # Check auth if header is present
         if headers.get("Authorization"):
             dynamodb = boto3.resource("dynamodb")
             table = dynamodb.Table(TABLE_NAME)
             _token = headers.get("Authorization")
+
+            # I've used a simple token mechanism so for now, just check if token is present
             token = table.get_item(
                 Key={"pk": f"TOKEN#{_token}", "sk": "TOKEN"}
             ).get("Item")
+
+            # If token is present, also pass dynamodb table instance...
+            # ...as it's not necessary to initialize it again
             if token:
                 args[0]["auth-user"] = token.get("user")
                 args[0]["dynamodb-table"] = table

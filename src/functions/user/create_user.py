@@ -56,6 +56,8 @@ def api(event, context):
             "user": f"USER#{user_id}",
         },
     ]
+
+    # Batch write user and token to the table
     with table.batch_writer() as batch:
         [batch.put_item(Item=_item) for _item in _items]
 
