@@ -1,23 +1,17 @@
 import json
-import os
 import uuid
 from datetime import datetime, timezone
 
-import boto3
 
 from src.utils.decorators import error_handler, auth_handler
 from src.utils.utils import build_response
 from src.validators.news_validation import CreateNews
 
 
-TABLE_NAME = os.environ.get("TABLE_NAME")
-
-
 @error_handler
 @auth_handler
 def api(event, context):
-    dynamodb = boto3.resource("dynamodb")
-    table = dynamodb.Table(TABLE_NAME)
+    table = event.get("dynamodb-table")
 
     body = json.loads(event["body"])
     user = event.get("auth-user")

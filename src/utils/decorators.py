@@ -29,10 +29,12 @@ def error_handler(func):
 def auth_handler(func):
     def validate(*args, **kwargs):
         event = args[0]
-        args[0]["alakazam"] = "Alakazam"
+
         if not event or not event.get("headers"):
             raise GenericError("Authorization details not provided", 401)
+
         headers = event.get("headers", {})
+
         if headers.get("Authorization"):
             dynamodb = boto3.resource("dynamodb")
             table = dynamodb.Table(TABLE_NAME)
@@ -42,6 +44,7 @@ def auth_handler(func):
             ).get("Item")
             if token:
                 args[0]["auth-user"] = token.get("user")
+                args[0]["dynamodb-table"] = table
                 to_return = func(*args, **kwargs)
                 return to_return
         raise GenericError("Unauthorized", 401)
