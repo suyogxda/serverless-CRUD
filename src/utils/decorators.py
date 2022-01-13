@@ -1,10 +1,11 @@
 import os
 
 import boto3
+from botocore.exceptions import ClientError
 from pydantic import ValidationError
 
 from src.errors.generic_error import GenericError
-
+from src.utils.utils import build_response
 
 TABLE_NAME = os.environ.get("TABLE_NAME")
 
@@ -22,6 +23,13 @@ def error_handler(func):
                 "statusCode": 400,
                 "body": e.json(),
             }
+        except ClientError as e:
+            if (
+                e.response["Error"]["Code"]
+                == "ConditionalCheckFailedException"
+            ):
+                return build_response(404, {"message": "Not found"})
+            return build_response(400, {"message": "Bad Request"})
         except GenericError as e:
             return e.serialize_response()
         return to_return

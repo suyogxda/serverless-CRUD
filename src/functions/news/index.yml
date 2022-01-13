@@ -5,3 +5,40 @@ create_news:
         path: news/create
         method: POST
         cors: true
+list_news:
+  handler: src/functions/news/list_news.api
+  events:
+    - http:
+        path: news
+        method: GET
+        cors: true
+retrieve_news:
+  handler: src/functions/news/retrieve_news.api
+  events:
+    - http:
+        path: news/{id}
+        method: GET
+        request:
+          parameters:
+            paths:
+              id: true
+update_news:
+  handler: src/functions/news/update_news.api
+  events:
+    - http:
+        path: news/{id}
+        method: PATCH
+        request:
+          parameters:
+            paths:
+              id: true
+delete_news:
+  handler: src/functions/news/delete_news.api
+  events:
+    - http:
+        path: news/{id}
+        method: DELETE
+        request:
+          parameters:
+            paths:
+              id: true

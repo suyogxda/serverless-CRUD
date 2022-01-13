@@ -24,13 +24,14 @@ def api(event, context):
     table.put_item(
         Item={
             "pk": news_id,
-            "sk": user,
+            "sk": "NEWS",
             "title": body.get("title"),
             "created_at": int(datetime.now(timezone.utc).timestamp()),
             "description": body.get("description"),
+            "user": user,
         }
     )
 
     return build_response(
-        201, {"message": f"News cerated with id `{news_id}`"}
+        201, {"message": f"News cerated with id `{news_id.split('#')[-1]}`"}
     )

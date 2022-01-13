@@ -31,7 +31,7 @@ def api(event, context):
         KeyConditionExpression="#sk = :sk and #email = :email",
         ExpressionAttributeNames={"#sk": "sk", "#email": "email"},
         ExpressionAttributeValues={":sk": "USER", ":email": email},
-    ).get("Item")
+    ).get("Items")
     if user_exists:
         return build_response(
             400, {"message": f"User with email: `{email}` already exists"}
