@@ -1,4 +1,5 @@
 import json
+import os
 
 import boto3
 
@@ -8,9 +9,12 @@ from src.validators.user_validation import SignIn
 from src.utils.decorators import error_handler
 
 
+TABLE_NAME = os.environ.get("TABLE_NAME")
+
+
 @error_handler
 def api(event, context):
-    dynamodb = boto3.resource("dynamodb")
+    dynamodb = boto3.resource(TABLE_NAME)
     table = dynamodb.Table("alakazam")
 
     body = json.loads(event["body"]) if event["body"] else {}

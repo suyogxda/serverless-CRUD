@@ -31,6 +31,9 @@ package:
     - "!requirements.txt"
     - "!package-lock.json"
     - "!test.py"
+    - "!.env.sample"
   individually: true
 functions:
   - ${file(src/functions/user/index.yml)}
+resources:
+  - ${file(src/resources/dynamodb/table.yml)}
