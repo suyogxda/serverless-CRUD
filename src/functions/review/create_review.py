@@ -11,13 +11,13 @@ from src.validators.review_validator import CreateReview
 """
 DATA MODEL:
     {
-        pk: f'REVIEW#{review_id}',
-        sk: AnyOf[f'REVIEW#DISH#USER#{user_id}', f'REVIEW#RESTAURANT#USER#{user_id}'],
-        created_at: timestamp,
-        user: f'USER#{user_id}',
-        description: 'Some description',
-        meta1: AnyOf[f'DISH#{dish_id}', f'RESTAURANT#{restaurant_id}'],
-        stars: AnyOf[1, 2, 3, 4, 5]
+        pk: f'REVIEW#{review_id}': str,
+        sk: AnyOf[f'REVIEW#DISH#USER#{user_id}', f'REVIEW#RESTAURANT#USER#{user_id}']: str,
+        created_at: timestamp: int,
+        user: f'USER#{user_id}': str,
+        description: 'Some description': str,
+        meta1: AnyOf[f'DISH#{dish_id}', f'RESTAURANT#{restaurant_id}']: str,
+        stars: AnyOf[1, 2, 3, 4, 5]: int
     }
 """
 
