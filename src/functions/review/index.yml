@@ -1,0 +1,29 @@
+create_review:
+  handler: src/functions/review/create_review.api
+  events:
+    - http:
+        path: review/create
+        method: POST
+        cors: true
+list_dish_review:
+  handler: src/functions/review/list_dish_review.api
+  events:
+    - http:
+        path: dish/{id}/review
+        method: GET
+        cors: true
+        request:
+          parameters:
+            paths:
+              id: true
+list_restaurant_review:
+  handler: src/functions/review/list_restaurant_review.api
+  events:
+    - http:
+        path: restaurant/{id}/review
+        method: GET
+        cors: true
+        request:
+          parameters:
+            paths:
+              id: true

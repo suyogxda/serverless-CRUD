@@ -37,5 +37,6 @@ package:
 functions:
   - ${file(src/functions/user/index.yml)}
   - ${file(src/functions/news/index.yml)}
+  - ${file(src/functions/review/index.yml)}
 resources:
   - ${file(src/resources/dynamodb/table.yml)}

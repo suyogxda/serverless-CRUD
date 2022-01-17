@@ -29,6 +29,7 @@ def error_handler(func):
                 == "ConditionalCheckFailedException"
             ):
                 return build_response(404, {"message": "Not found"})
+            print("BAD_REQUEST", e)
             return build_response(400, {"message": "Bad Request"})
         except GenericError as e:
             return e.serialize_response()
