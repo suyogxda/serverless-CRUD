@@ -31,7 +31,7 @@ update_dish_review:
   handler: src/functions/review/update_dish_review.api
   events:
     - http:
-        path: dish/{id}/review
+        path: review/dish/{id}
         method: PATCH
         cors: true
         request:
@@ -42,7 +42,7 @@ update_restaurant_review:
   handler: src/functions/review/update_restaurant_review.api
   events:
     - http:
-        path: restaurant/{id}/review
+        path: review/restaurant/{id}
         method: PATCH
         cors: true
         request:

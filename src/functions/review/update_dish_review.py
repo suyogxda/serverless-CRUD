@@ -31,21 +31,9 @@ def api(event, context):
     )
 
     # Update only if review exists else, send 404
-    _review = table.query(
-        IndexName="sk-meta1-index",
-        Limit=1,
-        KeyConditionExpression="#meta1 = :meta1 and #sk = :sk",
-        ExpressionAttributeNames={"#meta1": "meta1", "#sk": "sk"},
-        ExpressionAttributeValues={
-            ":meta1": f"DISH#{path_params.get('id')}",
-            ":sk": f"REVIEW#DISH#{user}",
-        },
-    ).get("Items")
-    if not _review:
-        return build_response(404, {"message": "Not found"})
     review = table.update_item(
         Key={
-            "pk": _review[0].get("pk"),
+            "pk": f"REVIEW#{path_params.get('id')}",
             "sk": f"REVIEW#DISH#{user}",
         },
         ReturnValues="ALL_NEW",
