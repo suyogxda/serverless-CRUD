@@ -28,6 +28,7 @@ def error_handler(func):
                 e.response["Error"]["Code"]
                 == "ConditionalCheckFailedException"
             ):
+                print("NOT_FOUND", e)
                 return build_response(404, {"message": "Not found"})
             print("BAD_REQUEST", e)
             return build_response(400, {"message": "Bad Request"})

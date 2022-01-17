@@ -12,7 +12,7 @@ from src.validators.review_validator import CreateReview
 DATA MODEL:
     {
         pk: f'REVIEW#{review_id}',
-        sk: f'REVIEW#USER#{user_id}',
+        sk: AnyOf[f'REVIEW#DISH#USER#{user_id}', f'REVIEW#RESTAURANT#USER#{user_id}'],
         created_at: timestamp,
         user: f'USER#{user_id}',
         description: 'Some description',
@@ -40,6 +40,11 @@ def api(event, context):
         if item_type == "dish"
         else f"RESTAURANT#{body.get('item_id')}"
     )
+    sort_key = (
+        f"REVIEW#DISH#{user}"
+        if item_type == "dish"
+        else f"REVIEW#RESTAURANT#{user}"
+    )
 
     # Check if existing review for same dish/restaurant by same user exists
     existing_review = table.query(
@@ -47,10 +52,7 @@ def api(event, context):
         Limit=1,
         KeyConditionExpression="#meta1 = :meta1 and #sk = :sk",
         ExpressionAttributeNames={"#meta1": "meta1", "#sk": "sk"},
-        ExpressionAttributeValues={
-            ":meta1": item_id,
-            ":sk": f"REVIEW#{user}",
-        },
+        ExpressionAttributeValues={":meta1": item_id, ":sk": sort_key},
     ).get("Items")
     # Send 400 if review already exists
     if existing_review:
@@ -64,7 +66,7 @@ def api(event, context):
     table.put_item(
         Item={
             "pk": review_id,
-            "sk": f"REVIEW#{user}",
+            "sk": sort_key,
             "meta1": item_id,
             "user": user,
             "stars": int(body.get("stars")),

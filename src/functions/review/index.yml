@@ -27,3 +27,25 @@ list_restaurant_review:
           parameters:
             paths:
               id: true
+update_dish_review:
+  handler: src/functions/review/update_dish_review.api
+  events:
+    - http:
+        path: dish/{id}/review
+        method: PATCH
+        cors: true
+        request:
+          parameters:
+            paths:
+              id: true
+update_restaurant_review:
+  handler: src/functions/review/update_restaurant_review.api
+  events:
+    - http:
+        path: restaurant/{id}/review
+        method: PATCH
+        cors: true
+        request:
+          parameters:
+            paths:
+              id: true
